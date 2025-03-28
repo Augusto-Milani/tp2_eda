@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 3.1.4)
+cmake_minimum_required(VERSION 3.15.0)
+set(CMAKE_TOOLCHAIN_FILE "/home/amilani/dev/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain file")
 project(main VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 11)
 
-# From "Working with CMake" documentation:
+#From "Working with CMake" documentation:
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin" OR ${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     # AddressSanitizer (ASan)
     add_compile_options(-fsanitize=address)
@@ -15,15 +17,22 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     add_link_options(-fsanitize=undefined)
 endif()
 
+#Copy resources folder to build folder
+file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+
+#Configurar explícitamente la ubicación de raylib si es necesario
+set(raylib_DIR "/home/francob/dev/vcpkg/installed/x64-linux/share/raylib")
+find_package(raylib CONFIG REQUIRED)
+
+#Agregar GLFW
+find_package(glfw3 CONFIG REQUIRED)
+
 add_executable(main main.cpp CSVData.cpp Text.cpp Lequel.cpp)
 
-# Copy resources folder to build folder
-file(COPY ${CMAKE_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE_INIT})
-
-# Raylib
-find_package(raylib CONFIG REQUIRED)
 target_include_directories(main PRIVATE ${raylib_INCLUDE_DIRS})
-target_link_libraries(main PRIVATE ${raylib_LIBRARIES})
+#Agregar glfw a las bibliotecas vinculadas
+target_link_libraries(main PRIVATE ${raylib_LIBRARIES} glfw)
+
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # From "Working with CMake" documentation:
     target_link_libraries(main PRIVATE "-framework IOKit" "-framework Cocoa" "-framework OpenGL")
