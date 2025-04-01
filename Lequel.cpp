@@ -27,12 +27,21 @@ TrigramProfile buildTrigramProfile(const Text &text)
     wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
     // Your code goes here...
-    for (auto line : text)
-    {
-        if ((line.length() > 0) &&
-            (line[line.length() - 1] == '\r'))
-            line = line.substr(0, line.length() - 1);
+    TrigramProfile profile;
+
+    for (auto line : text) {    //Each possible substring,
+        for (auto line : text) {    // with 3 characters.
+            if ((line.length() > 3)   &&   (line[line.length() - 1] == '\r')) { //If there's more than 3 characters in line,
+                line = line.substr(0, line.length() - 1);   // substracts last character from line.
+            }
+        }
+        profile[line]++;    //Frequency of substring is incremented by one.
+
+        if ((line.length() > 3)   &&   (line[line.length() - 1] == '\r')) {
+            line = line.substr(0, 0);   // substracts first character from line.
+        }
     }
+
 
     // Tip: converts UTF-8 string to wstring
     // wstring unicodeString = converter.from_bytes(textLine);
@@ -40,7 +49,7 @@ TrigramProfile buildTrigramProfile(const Text &text)
     // Tip: convert wstring to UTF-8 string
     // string trigram = converter.to_bytes(unicodeTrigram);
 
-    return TrigramProfile(); // Fill-in result here
+    return TrigramProfile(profile); // Fill-in result here
 }
 
 /**
