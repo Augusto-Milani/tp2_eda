@@ -25,8 +25,7 @@ using namespace std;
 TrigramProfile buildTrigramProfile(const Text &text)
 {
     wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-
-    // Your code goes here...
+    
     TrigramProfile profile;
 
     for (auto line : text) {    //Each possible substring,
@@ -35,20 +34,18 @@ TrigramProfile buildTrigramProfile(const Text &text)
                 line = line.substr(0, line.length() - 1);   // substracts last character from line.
             }
         }
-        profile[line]++;    //Frequency of substring is incremented by one.
+        profile[line] += 1.0F;    //Frequency of substring is incremented by one.
+        
+        // Tip: converts UTF-8 string to wstring
+        wstring unicodeString = converter.from_bytes(textLine);
 
+        // Tip: convert wstring to UTF-8 string
+        string trigram = converter.to_bytes(unicodeTrigram);
+        
         if ((line.length() > 3)   &&   (line[line.length() - 1] == '\r')) {
             line = line.substr(0, 0);   // substracts first character from line.
         }
-    }
-
-
-    // Tip: converts UTF-8 string to wstring
-    // wstring unicodeString = converter.from_bytes(textLine);
-
-    // Tip: convert wstring to UTF-8 string
-    // string trigram = converter.to_bytes(unicodeTrigram);
-
+    } 
     return TrigramProfile(profile); // Fill-in result here
 }
 
