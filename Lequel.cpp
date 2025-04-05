@@ -28,7 +28,7 @@
      
      TrigramProfile profile;
  
-     for (auto line : text) {    //Each line of text,
+     for (auto line : text) {    //Each line of text
 
          // Tip: converts UTF-8 string to wstring
          wstring unicodeString = converter.from_bytes(line);
@@ -52,7 +52,7 @@
         }
             
     }
-    return TrigramProfile(profile); // Fill-in result here
+    return TrigramProfile(profile);
  }
  
  /**
@@ -62,13 +62,13 @@
   */
 void normalizeTrigramProfile(TrigramProfile &trigramProfile)
 {
-    float sumFrecSquare = 0;
+    float sumFreqSquare = 0;
     for(auto &element : trigramProfile) {
-        sumFrecSquare += pow(element.second, 2);
+        sumFreqSquare += pow(element.second, 2);
     }
 
     for(auto &element : trigramProfile) {
-        element.second /= sqrt(sumFrecSquare);
+        element.second /= sqrt(sumFreqSquare);
     }
 
     return;
@@ -81,12 +81,21 @@ void normalizeTrigramProfile(TrigramProfile &trigramProfile)
   * @param languageProfile The language trigram profile
   * @return float The cosine similarity score
   */
- float getCosineSimilarity(TrigramProfile &textProfile, TrigramProfile &languageProfile)
- {
-     // Your code goes here...
- 
-     return 0; // Fill-in result here
- }
+float getCosineSimilarity(TrigramProfile &textProfile, TrigramProfile &languageProfile)
+{
+    float similarity = 0;
+
+    for(auto elementText : textProfile) {
+        for(auto elementLanguage : languageProfile) {
+
+            if (elementText.first == elementLanguage.first) {   //Compares if the string given exists in both profiles
+                similarity += elementText.second * elementLanguage.second;  //Sum the product of frequencies
+                break;  //No need to continue searching for the string.
+            }
+        }
+    }
+    return similarity;
+}
  
  /**
   * @brief Identifies the language of a text.
