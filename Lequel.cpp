@@ -60,12 +60,19 @@
   *
   * @param trigramProfile The trigram profile.
   */
- void normalizeTrigramProfile(TrigramProfile &trigramProfile)
- {
-     // Your code goes here...
- 
-     return;
- }
+void normalizeTrigramProfile(TrigramProfile &trigramProfile)
+{
+    float sumFrecSquare = 0;
+    for(auto &element : trigramProfile) {
+        sumFrecSquare += pow(element.second, 2);
+    }
+
+    for(auto &element : trigramProfile) {
+        element.second /= sqrt(sumFrecSquare);
+    }
+
+    return;
+}
  
  /**
   * @brief Calculates the cosine similarity between two trigram profiles
