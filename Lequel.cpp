@@ -31,24 +31,23 @@
      for (auto line : text) {    //Each line of text
 
          // Tip: converts UTF-8 string to wstring
-         wstring unicodeString = converter.from_bytes(line);
+         std::wstring unicodeString = converter.from_bytes(line);
 
          while ((unicodeString.length() >= 3)   &&   (unicodeString[unicodeString.length() - 1] == '\r')) {
 
-            wstring wstrTrigram = unicodeString;
+            std::wstring wstrTrigram = unicodeString;
 
-            while ( (wstrTrigram.length() > 3)   &&   
-                    (wstrTrigram[wstrTrigram.length() - 1] == '\r') ) { //If there's more than 3 characters in line,
+            while (wstrTrigram.length() > 3) { //If there's more than 3 characters in line,
                 wstrTrigram = wstrTrigram.substr(0, wstrTrigram.length() - 1);   // substracts last character from line.
             }  
 
             if(wstrTrigram.length() == 3) {
                 // Tip: convert wstring to UTF-8 string
-                string trigram = converter.to_bytes(wstrTrigram);
+                std::string trigram = converter.to_bytes(wstrTrigram);
                 profile[trigram] += 1.0F;    //Frequency of trigram is incremented by one.
             }
 
-            unicodeString = unicodeString.substr(0, 0);   // substracts first character from line.
+            unicodeString = unicodeString.substr(1);   // substracts first character from line.
         }
             
     }
