@@ -52,7 +52,7 @@
         }
             
     }
-    return TrigramProfile(profile);
+    return profile;
  }
  
  /**
@@ -104,10 +104,23 @@ float getCosineSimilarity(TrigramProfile &textProfile, TrigramProfile &languageP
   * @param languages A list of Language objects
   * @return string The language code of the most likely language
   */
- string identifyLanguage(const Text &text, LanguageProfiles &languages)
- {
-     // Your code goes here...
- 
-     return ""; // Fill-in result here
- }
+string identifyLanguage(const Text &text, LanguageProfiles &languages)
+{
+    std::string result;
+    float cosineSimilarity, similarity = 0;
+
+    TrigramProfile profile = buildTrigramProfile(text);
+    normalizeTrigramProfile(profile);
+
+    for(auto language : languages) {
+        cosineSimilarity = getCosineSimilarity(profile, language.trigramProfile);
+        
+        if (cosineSimilarity > similarity) {
+            similarity = cosineSimilarity;
+            result = language.languageCode;
+        }
+    }
+
+    return result;
+}
  
