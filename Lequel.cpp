@@ -44,7 +44,7 @@
             if(wstrTrigram.length() == 3) {
                 // Tip: convert wstring to UTF-8 string
                 std::string trigram = converter.to_bytes(wstrTrigram);
-                profile[trigram] = 999.0F;    //Frequency of trigram is incremented by one.
+                profile[trigram] += 1.0F;    //Frequency of trigram is incremented by one.
             }
 
             unicodeString = unicodeString.substr(1);   // substracts first character from line.
