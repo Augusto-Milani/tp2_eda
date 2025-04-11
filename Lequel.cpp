@@ -11,9 +11,10 @@
  #include <codecvt>
  #include <locale>
  #include <iostream>
- 
+ #include <vector>
+
  #include "Lequel.h"
- 
+
  using namespace std;
  
  /**
@@ -25,27 +26,25 @@
  TrigramProfile buildTrigramProfile(const Text &text)
  {
      wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-     
      TrigramProfile profile;
- 
-     for (auto line : text) {    //Each line of text
 
-         // Tip: converts UTF-8 string to wstring
+     for (auto line : text) {
+        // convierte a wstring la linea
          std::wstring unicodeString = converter.from_bytes(line);
 
+         //si tiene 3  o mas caracteres...
          while (unicodeString.length() >= 3) {
-
             std::wstring wstrTrigram = unicodeString;
 
-            while (wstrTrigram.length() > 3) { //If there's more than 3 characters in line,
-                wstrTrigram = wstrTrigram.substr(0, wstrTrigram.length() - 1);   // substracts last character from line.
-            }  
-
-            if(wstrTrigram.length() == 3) {
-                // Tip: convert wstring to UTF-8 string
-                std::string trigram = converter.to_bytes(wstrTrigram);
-                profile[trigram] += 1.0F;    //Frequency of trigram is incremented by one.
+            //saco todos los caracteres menos los primeros 3
+            while (wstrTrigram.length() > 3) {
+                wstrTrigram = wstrTrigram.substr(0, wstrTrigram.length() - 1);
             }
+
+            // lo vuelvo a convertir a string
+            std::string trigram = converter.to_bytes(wstrTrigram);
+            profile[trigram] += 1.0F;
+            // SI ESE TRIGRAMA YA FUE GUARDADO, ENTONCES LE VOY A ESTAR AUMENTANDO LA FRECUENCIA
 
             unicodeString = unicodeString.substr(1);   // substracts first character from line.
         }
@@ -58,18 +57,27 @@
   *
   * @param trigramProfile The trigram profile.
   */
-void normalizeTrigramProfile(TrigramProfile &trigramProfile)
+bool normalizeTrigramProfile(TrigramProfile &trigramProfile)
 {
     float sumFreqSquare = 0;
-    for(auto &element : trigramProfile) {
-        sumFreqSquare += pow(element.second, 2);
+    vector<float> frequencies;
+    
+    //it is more efficient to loop through and access a vector than a map
+    for (auto trigramToCopyFrequencyFrom : trigramProfile) 
+        frequencies.push_back(trigramToCopyFrequencyFrom.second);
+
+    for(auto &element : frequencies)
+        sumFreqSquare += element * element;
+
+    if (!sumFreqSquare) {
+        perror("Invalid trigram profile");
+        return false;
     }
 
-    for(auto &element : trigramProfile) {
-        element.second /= sqrt(sumFreqSquare);
-    }
+    for(auto &element : frequencies)
+        element /= sqrt(sumFreqSquare);
 
-    return;
+    return true;
 }
  
  /**
@@ -81,15 +89,12 @@ void normalizeTrigramProfile(TrigramProfile &trigramProfile)
   */
 float getCosineSimilarity(TrigramProfile &textProfile, TrigramProfile &languageProfile)
 {
-    float similarity = 0;
+    float similarity = 0.0;
 
-    for(auto elementText : textProfile) {
-        for(auto elementLanguage : languageProfile) {
-
-            if (elementText.first == elementLanguage.first) {   //Compares if the string given exists in both profiles
-                similarity += elementText.second * elementLanguage.second;  //Sum the product of frequencies
-                break;  //No need to continue searching for the string.
-            }
+    for (auto &textTrigram : textProfile) {
+        auto currentTrigram = languageProfile.find(textTrigram.first);
+        if (currentTrigram != languageProfile.end()) {
+            similarity += textTrigram.second * currentTrigram->second;
         }
     }
     return similarity;
@@ -108,17 +113,21 @@ string identifyLanguage(const Text &text, LanguageProfiles &languages)
     float cosineSimilarity, similarity = 0;
 
     TrigramProfile profile = buildTrigramProfile(text);
-    normalizeTrigramProfile(profile);
+    
+    if (!normalizeTrigramProfile(profile))
+        return "";
 
-    for(auto language : languages) {
-        cosineSimilarity = getCosineSimilarity(profile, language.trigramProfile);
-        
-        if (cosineSimilarity > similarity) {
-            similarity = cosineSimilarity;
-            result = language.languageCode;
+    else {
+        for (auto language : languages) {
+            cosineSimilarity = getCosineSimilarity(profile, language.trigramProfile); // language.trigramProfile ya estaba normalizado
+
+            if (cosineSimilarity > similarity) {
+                similarity = cosineSimilarity;
+                result = language.languageCode;
+            }
         }
-    }
 
-    return result;
+        return result;
+    }
 }
  
