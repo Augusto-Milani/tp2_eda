@@ -55,24 +55,28 @@ Cheroqui
 8. ¿En qué idioma está el siguiente texto?
 
 ُیعتقد بأن ضابطة في الجیش البریطاني تدعى بریت تشاندي أصبحت أولامرأة من أصول آسیویة ُتكملُ رحلة استكشافیة فردیة عبر .القارة القطبیة الجنوبی  
+
 Árabe
 
 
 9. ¿En qué idioma está el siguiente texto?
 
 ગુજરાતી સંસ્કૃત ભાષામાંથી વિકસિત થયેલી આધુનિક ઈન્ડો-આર્યન ભાષા છે. પરંપરાગત રીતે ૩ ઐતિહાસિક તબક્કાઓ પ્રમાણે ઈન્ડો-આર્યન ભાષાઓ વચ્ચે ભેદ કરાય છે.
+
 Guyaratí
 
 
 10. ¿En qué idioma está el siguiente texto?
 
 Al Seicento appartiene il primo trattato dedicato non ai volgari italiani o a uno o più di tali volgari, ma alla lingua italiana in quanto tale: Delle osservazioni della lingua italiana di Marcantonio Mambelli, detto il Cinonio.
+
 Italiano
 
 
 11. El siguiente texto fue escrito por Robert Burns en escocés. ¿Qué dice Lequel? ¿Qué falla? Justifica por qué ocurre lo que ocurre.
 
 And there's a hand, my trusty fiere! and gie's a hand o' thine! And we’ll tak' a right gude-willie waught, for auld lang syne.
+
 Detecta inglés porque el inglés antiguo y el escocés son ambas lenguas germánicas y comparten raíces, entonces comparten bastantes trigramas se asemejan.
 
 
@@ -87,7 +91,7 @@ WE HAD EVERYTHING BEFORE US, WE HAD NOTHING BEFORE US,
 WE WERE ALL GOING DIRECT TO HEAVEN, WE WERE ALL GOING DIRECT THE OTHER WAY
 – IN SHORT, THE PERIOD WAS SO FAR LIKE THE PRESENT PERIOD, THAT SOME OF ITS NOISIEST AUTHORITIES INSISTED ON ITS BEING RECEIVED, FOR GOOD OR FOR EVIL, IN THE SUPERLATIVE DEGREE OF COMPARISON ONLY.
 
-Afrikaans, falla porque está en mayúsculas.
+Lequel indica que es afrikáans. Falla porque es muy repetitivo con el trigrama "it ", que es más frecuente en afrikáans que en inglés.
 
 ## Bonus points
 
@@ -106,5 +110,4 @@ de hacer el producto y la cuenta termina siendo la siguiente:		(u/|u|) . (v/|v|)
 
 CUELLO DE BOTELLA COMPUTACIONAL
 El cuello de botella computacional es que la lista de trigramas de cada lenguaje es muy larga, por 
-lo que para una lista larga de lenguajes la ejecución se enlentece. Para solucionarlo, se podría 
-comparar cada línea solo con los trigramas de mayor frecuencia del idioma.
+lo que para una lista larga de lenguajes la ejecución se enlentece. Para solucionarlo, acotamos la cantidad máxima de perfiles de trigramas que se toman de la muestra a 2000 (en un define) para que no se tilde el programa, pero puede devolver un resultado impreciso o incorrecto si el texto es muy largo.

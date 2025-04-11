@@ -14,6 +14,7 @@
  #include <vector>
 
  #include "Lequel.h"
+ #define COTA_TRIGRAMA 2000
 
  using namespace std;
  
@@ -31,7 +32,7 @@
      int i=0;
      for (auto line : text) {
         //Cota de cantidad de trigramas, para textos muy largos.
-        if(i++ > 2000) {
+        if(i++ > COTA_TRIGRAMA) {
             break;
         }
         // convierte a wstring la linea
