@@ -28,7 +28,12 @@
      wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
      TrigramProfile profile;
 
+     int i=0;
      for (auto line : text) {
+        //Cota de cantidad de trigramas, para textos muy largos.
+        if(i++ > 2000) {
+            break;
+        }
         // convierte a wstring la linea
          std::wstring unicodeString = converter.from_bytes(line);
 
