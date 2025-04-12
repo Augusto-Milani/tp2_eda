@@ -1,6 +1,8 @@
 /**
  * @brief Lequel? main module
  * @author Marc S. Ressl
+ * @author Augusto Milani
+ * @author Rita Moschini
  * 
  * @copyright Copyright (c) 2022-2023
  */
@@ -19,7 +21,8 @@
  const string LANGUAGECODE_NAMES_FILE = "resources/languagecode_names_es.csv";
  const string TRIGRAMS_PATH = "resources/trigrams/";
  
- static void cutLowFrequencyTrigrams(int numberOfFrequencies, TrigramProfile& trigramProfileToAnalize);
+ static void cutLowFrequencyTrigrams(int numberOfFrequencies, 
+                                     TrigramProfile& trigramProfileToAnalize);
  #define MAX_TRIGRAMS_PER_LANGUAGE 1000 
  
  
@@ -90,12 +93,14 @@
  }
  
  /**
-  * @brief Cuts low-frequency trigrams to improve computational complexity. Assumes that trigramProfileToAnalize is ordered in descending order.
+  * @brief Cuts low-frequency trigrams to improve computational complexity. Assumes that 
+  *        trigramProfileToAnalize is ordered in descending order.
   *
   * @param numberOfFrequencies Number of frequencies that are kept.
   * @param trigramProfileToAnalize The trigram profile that will be cut.
   */
- static void cutLowFrequencyTrigrams(int numberOfFrequencies, TrigramProfile& trigramProfileToAnalize)
+ static void cutLowFrequencyTrigrams( int numberOfFrequencies, 
+                                      TrigramProfile& trigramProfileToAnalize)
  {
      if (trigramProfileToAnalize.size() > numberOfFrequencies) {
          TrigramProfile reducedTrigramProfile;

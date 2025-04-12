@@ -1,6 +1,8 @@
 /**
  * @brief Lequel? language identification based on trigrams
  * @author Marc S. Ressl
+ * @author Augusto Milani
+ * @author Rita Moschini
  *
  * @copyright Copyright (c) 2022-2023
  *
@@ -14,7 +16,7 @@
  #include <vector>
 
  #include "Lequel.h"
- #define COTA_TRIGRAMA 2000
+ #define MAX_NUMBER_OF_TRIGRAMS 2000
 
  using namespace std;
  
@@ -29,30 +31,32 @@
      wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
      TrigramProfile profile;
 
+     /*
+      * Since string saves sequences of bytes and UTF-8 saves characters in variable sizes, if
+      * member functions such as substr() are used on strings a UTF-8 character could be cut in
+      * half. Therefore, to operate with UTF-8 characters first we convert the string variables to
+      * wstring.
+      */
+
+
      int i=0;
      for (auto line : text) {
-        //Cota de cantidad de trigramas, para textos muy largos.
-        if(i++ > COTA_TRIGRAMA) {
+        if ( i++ > MAX_NUMBER_OF_TRIGRAMS) //Cota de cantidad de trigramas, para textos muy largos.
             break;
-        }
-        // convierte a wstring la linea
+        
          std::wstring unicodeString = converter.from_bytes(line);
 
-         //si tiene 3  o mas caracteres...
          while (unicodeString.length() >= 3) {
             std::wstring wstrTrigram = unicodeString;
 
-            //saco todos los caracteres menos los primeros 3
             while (wstrTrigram.length() > 3) {
                 wstrTrigram = wstrTrigram.substr(0, wstrTrigram.length() - 1);
             }
 
-            // lo vuelvo a convertir a string
             std::string trigram = converter.to_bytes(wstrTrigram);
             profile[trigram] += 1.0F;
-            // SI ESE TRIGRAMA YA FUE GUARDADO, ENTONCES LE VOY A ESTAR AUMENTANDO LA FRECUENCIA
 
-            unicodeString = unicodeString.substr(1);   // substracts first character from line.
+            unicodeString = unicodeString.substr(1); // Substracts first character from line.
         }
     }
     return profile;
@@ -62,13 +66,14 @@
   * @brief Normalizes a trigram profile.
   *
   * @param trigramProfile The trigram profile.
+  * @return bool state of success.
   */
 bool normalizeTrigramProfile(TrigramProfile &trigramProfile)
 {
     float sumFreqSquare = 0;
     vector<float> frequencies;
     
-    //it is more efficient to loop through and access a vector than a map
+    // It is more efficient to loop through and access a vector than a map
     for (auto trigramToCopyFrequencyFrom : trigramProfile) 
         frequencies.push_back(trigramToCopyFrequencyFrom.second);
 
@@ -99,6 +104,7 @@ float getCosineSimilarity(TrigramProfile &textProfile, TrigramProfile &languageP
 
     for (auto &textTrigram : textProfile) {
         auto currentTrigram = languageProfile.find(textTrigram.first);
+        //Si encuentra el trigrama en el idioma, se suma el producto entre las frecuencias.
         if (currentTrigram != languageProfile.end()) {
             similarity += textTrigram.second * currentTrigram->second;
         }
@@ -125,7 +131,7 @@ string identifyLanguage(const Text &text, LanguageProfiles &languages)
 
     else {
         for (auto language : languages) {
-            cosineSimilarity = getCosineSimilarity(profile, language.trigramProfile); // language.trigramProfile ya estaba normalizado
+            cosineSimilarity = getCosineSimilarity(profile, language.trigramProfile);
 
             if (cosineSimilarity > similarity) {
                 similarity = cosineSimilarity;

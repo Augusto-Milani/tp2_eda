@@ -2,16 +2,15 @@
 
 ## Integrantes del grupo y contribución al trabajo de cada integrante
 
-Augusto Milani: contrucción de los perfiles de trigramas, normalización de frecuencias, similitud coseno
-Rita Moschini: revisión y mejora de la complejidad computacional, bonus, programación defensiva
+Augusto Milani: Construcción de los perfiles de trigramas, normalización de frecuencias, similitud coseno.
+Rita Moschini: Revisión y mejora de la complejidad computacional, bonus, programación defensiva.
 
 ## Respuestas del enunciado
 
 1. ¿En qué idioma está el siguiente texto?
 
 історія земель сучасної України, українського народу та інших національностей, що проживають на території України, від доісторичних часів до сьогодення.
-Ucraniano
-## Tira búlgaro ??
+Búlgaro
 
 
 2. ¿En qué idioma está el siguiente texto?
@@ -29,8 +28,7 @@ Birmano
 4. ¿En qué idioma está el siguiente texto?
 
 Negema wangu binti, mchachefu wa sanati upulike wasiati asa ukanzingatia. Maradhi yamenshika hatta yametimu mwaka sikupata kutamka neno lema kukwambia. Ndoo mbee ujilisi na wino na qaratasi moyoni nina hadithi nimependa kukwambia.
-Suajili 
-## Tira tagalo ??
+Tagalo
 
 
 5. ¿En qué idioma está el siguiente texto?
@@ -42,8 +40,7 @@ Armenio
 6. ¿En qué idioma está el siguiente texto?
 
 Belirli bir bölgedeki mevcut hava durumu hava raporu, gelecekte beklenen durumlar ise hava tahmini şeklinde, ilgili meteoroloji otoriteleri tarafından yayımlanır.
-Turco
-## Tira Maorí ??
+Maorí
 
 
 7. ¿En qué idioma está el siguiente texto?
@@ -77,7 +74,7 @@ Italiano
 
 And there's a hand, my trusty fiere! and gie's a hand o' thine! And we’ll tak' a right gude-willie waught, for auld lang syne.
 
-Detecta inglés porque el inglés antiguo y el escocés son ambas lenguas germánicas y comparten raíces, entonces comparten bastantes trigramas se asemejan.
+Detecta inglés porque el inglés antiguo y el escocés son ambas lenguas germánicas y comparten raíces, entonces comparten bastantes trigramas; se asemejan.
 
 
 12. El siguiente texto está en inglés. ¿Qué dice Lequel? ¿Qué falla? Justifica por qué ocurre lo que ocurre.
@@ -110,4 +107,7 @@ de hacer el producto y la cuenta termina siendo la siguiente:		(u/|u|) . (v/|v|)
 
 CUELLO DE BOTELLA COMPUTACIONAL
 El cuello de botella computacional es que la lista de trigramas de cada lenguaje es muy larga, por 
-lo que para una lista larga de lenguajes la ejecución se enlentece. Para solucionarlo, acotamos la cantidad máxima de perfiles de trigramas que se toman de la muestra a 2000 (en un define) para que no se tilde el programa, pero puede devolver un resultado impreciso o incorrecto si el texto es muy largo.
+lo que para una lista larga de lenguajes la ejecución se enlentece. Para solucionarlo, acotamos la 
+cantidad máxima de perfiles de trigramas que se toman de la muestra a 2000 (en un define) para que 
+no se tilde el programa, pero puede devolver un resultado impreciso o incorrecto si el texto es 
+muy largo.
